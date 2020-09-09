@@ -21,10 +21,24 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  // var data = _.map(items, (text, id) => {
+  //   return { id, text };
+  // });
+  // callback(null, data);
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      throw ('Error reading directory');
+    } else {
+      let list = _.map(files, (file) => {
+        let fileId = path.basename(file, '.txt');
+        return {
+          'id': fileId,
+          'text': fileId
+        };
+      });
+      callback(null, list);
+    }
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
